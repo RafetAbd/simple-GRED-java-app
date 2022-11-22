@@ -1,7 +1,17 @@
 package com.employee.employeeApplication.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+// @Entity says that this class can be converted to table and being processed.
+@Entity
 public class Employee {
 
+    // @Id annotation declare that employeeId is the primary key in the DB table.
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     int employeeId;
     String employeeName;
     String employeeCity;
