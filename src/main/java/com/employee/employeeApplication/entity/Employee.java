@@ -1,9 +1,9 @@
 package com.employee.employeeApplication.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
+import java.util.List;
 
 // @Entity says that this class can be converted to table and being processed.
 @Entity
@@ -16,11 +16,35 @@ public class Employee {
     String employeeName;
     String employeeCity;
 
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Spouse spouse;
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Address> addresses;
+    public Employee() {
+
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Project> projects;
+
+
     public Employee(int employeeId, String employeeName, String employeeCity) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.employeeCity = employeeCity;
     }
+
+
 
     public int getEmployeeId() {
         return employeeId;
@@ -44,5 +68,31 @@ public class Employee {
 
     public void setEmployeeCity(String employeeCity) {
         this.employeeCity = employeeCity;
+    }
+
+    public Spouse getSpouse() {
+        return spouse;
+    }
+
+    public void setSpouse(Spouse spouse) {
+        this.spouse = spouse;
+    }
+
+    public void addProject(Project project) {
+        this.projects.add(project);
+        project.getEmployees().add(this);
+    }
+
+    public void removeProject(Project project) {
+        this.projects.remove(project);
+        project.getEmployees().remove(project);
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }
