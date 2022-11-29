@@ -3,6 +3,7 @@ package com.employee.employeeApplication.entity;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 // @Entity says that this class can be converted to table and being processed.
@@ -19,6 +20,8 @@ public class Employee {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Spouse spouse;
+
+
 
     public List<Address> getAddresses() {
         return addresses;
@@ -37,6 +40,11 @@ public class Employee {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Project> projects;
 
+
+    public Employee(String employee1, String city1) {
+        this.employeeName = employee1;
+        this.employeeCity = city1;
+    }
 
     public Employee(int employeeId, String employeeName, String employeeCity) {
         this.employeeId = employeeId;
@@ -94,5 +102,16 @@ public class Employee {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    public void addAddress(Address address) {
+        this.addresses = new ArrayList<>();
+        this.addresses.add(address);
+        address.setEmployee(this);
+    }
+
+    public void removeAddress(Address address) {
+        this.addresses.remove(address);
+        address.setEmployee(null);
     }
 }
